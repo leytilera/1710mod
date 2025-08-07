@@ -6,6 +6,10 @@ buildscript {
             url = "https://maven.minecraftforge.net/"
         }
         maven {
+            name = "tilera"
+            url = "https://maven.tilera.xyz"
+        }
+        maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
@@ -14,17 +18,22 @@ buildscript {
         classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
             changing = true
         }
+        classpath ('net.anvilcraft:gradlehaxe:0.2.0') {
+            changing = true
+        }
     }
 }
 
+apply plugin: 'scala'
 apply plugin: 'forge'
+apply plugin: 'haxe'
 apply plugin: 'maven-publish'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 version = "1.0"
-group= "modgroup"
+group= "com.example"
 archivesBaseName = "modid"
 
 minecraft {
@@ -34,6 +43,26 @@ minecraft {
 
 repositories {
     maven { url = "https://maven.tilera.xyz" }
+}
+
+sourceSets {
+    main {
+        haxeopts {
+            includePackage "com.example"
+            remapHaxePackage "com.example.haxe"
+        }
+        java {
+            srcDirs = [
+                'src/main/java',
+                'src/api/java'
+            ]
+        }
+        resources {
+            srcDirs = [
+                'src/main/resources'
+            ]
+        }
+    }
 }
 
 dependencies {
